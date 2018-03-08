@@ -27,6 +27,29 @@
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
   </ItemGroup>
+  
+
+  <ItemGroup>
+    <None Remove="ClientApp\component\Chat.tsx" />
+    <None Remove="ClientApp\component\Layout.tsx" />
+    <None Remove="ClientApp\component\Login.tsx" />
+    <None Remove="ClientApp\component\Persons.tsx" />
+  </ItemGroup>
+  
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\component\Chat.tsx" />
+    <TypeScriptCompile Include="ClientApp\component\Layout.tsx" />
+    <TypeScriptCompile Include="ClientApp\component\Login.tsx" />
+    <TypeScriptCompile Include="ClientApp\component\Persons.tsx" />
+  </ItemGroup>
+  
+
+  <ItemGroup>
+    <Content Update="wwwroot\favicon.ico">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->

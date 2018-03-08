@@ -1,9 +1,12 @@
 {
   "name": "Chat_App_Core_React",
   "private": true,
+  "main": "dist/main.js",
   "version": "0.0.0",
   "devDependencies": {
+    "@types/universal-cookie": "git+ssh://git@github.com:S64/types-universal-cookie.git#v2.1.2-2",
     "@types/history": "4.6.0",
+    "@types/jquery": "^1.10.34",
     "@types/react": "15.0.35",
     "@types/react-dom": "15.5.1",
     "@types/react-hot-loader": "3.0.3",
@@ -19,7 +22,7 @@
     "extract-text-webpack-plugin": "2.1.2",
     "file-loader": "0.11.2",
     "isomorphic-fetch": "2.2.1",
-    "jquery": "3.2.1",
+    "jquery": "3.3.0",
     "json-loader": "0.5.4",
     "react": "15.6.1",
     "react-dom": "15.6.1",
@@ -29,6 +32,10 @@
     "typescript": "2.4.1",
     "url-loader": "0.5.9",
     "webpack": "2.5.1",
-    "webpack-hot-middleware": "2.18.2"
+    "webpack-hot-middleware": "2.18.2",
+    "react-cookie": "2.1.0"
+  },
+  "dependencies": {
+    "universal-cookie": "2.0.0"
   }
 }
