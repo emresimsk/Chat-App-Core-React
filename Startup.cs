@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChatAppCoreReact.Hubs;
 using ChatAppCoreReact.IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -78,6 +79,8 @@ namespace Chat_App_Core_React
                 };
             });
 
+
+            services.AddSignalR();
             services.AddMvc();
         }
 
@@ -100,6 +103,8 @@ namespace Chat_App_Core_React
 
             app.UseAuthentication();
             app.UseStaticFiles();
+
+            app.UseSignalR(routes => { routes.MapHub<ChatHub>("chat"); });
 
             app.UseMvc(routes =>
             {
