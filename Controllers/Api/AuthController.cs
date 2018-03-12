@@ -55,7 +55,8 @@ namespace ChatAppCoreReact.Controllers.Api
             {
                 Code = Ok().StatusCode,
                 Message = "Login Success",
-                TokenResult = GenerateToken(userInfo, userRoles)
+                TokenResult = GenerateToken(userInfo, userRoles),
+                Id = userInfo.Id
             };
         }
 

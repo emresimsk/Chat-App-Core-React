@@ -1,12 +1,11 @@
 ﻿import * as React from 'react';
-import { Login } from "./Login";
 
 
 export interface LayoutProps {
     children?: React.ReactNode;
 }
 
-export class Layout extends React.Component<LayoutProps, {}> {
+export class Layout extends React.Component<{login:any}> {
 
     render() {
         return (
@@ -15,7 +14,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
                 <div className="row">
                     <div className="col-sm-10">EMRE ŞİMŞEK</div>
                     <div className="col-sm-2">
-                        <Login/>
+                        {this.props.login}
                     </div>
                 </div>
                 <div className="row">

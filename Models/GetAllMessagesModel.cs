@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace ChatAppCoreReact.Models
 {
-    public class LoginResponse
+    public class GetAllMessagesModel
     {
-        public string Id { get; set; }
-        public int Code { get; set; }
+        public string Token { get; set; }
         public string Message { get; set; }
-        public string TokenResult { get; set; }
+        public string Time { get; set; }
     }
 }

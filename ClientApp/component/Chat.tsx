@@ -1,7 +1,9 @@
 ﻿import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import './../css/chat.css';
 import * as SignalR from "@aspnet/signalr-client";
 import Cookies from 'universal-cookie';
+import * as $ from "jquery";
 
 
 const cookies: Cookies = new Cookies();
@@ -16,34 +18,71 @@ function Message(props:any) {
     );
 }
 
-function getCookie() {
+function getToken() {
    return cookies.get('token');
 }
 
-export class Chat extends React.Component {
+function getId() {
+    return cookies.get('userid'); 
+}
+
+export class Chat extends React.Component<{isLogin:any}> {
     state: {message:any;messageList:any,connection:any};
+    
+    el: any;
     constructor(props: any) {
         super(props);
         this.state = { message: "", messageList: [] ,connection: new SignalR.HubConnection('/chat')};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSendPress = this.handleSendPress.bind(this);
+        this.getAllMessages = this.getAllMessages.bind(this);
+
     }
 
     componentDidMount() {
+        
+        this.getAllMessages();
 
         this.state.connection
             .start()
             .then(() => console.log('Connection started!'))
             .catch((err:any) => console.log('Error while establishing connection :('));
 
-        this.state.connection.on('getMessage',
-            (message: any, date: any,token:any) => {
+        this.state.connection.on('getMessageAll',
+            (message: any, date: any,id:any) => {
                 const messageList = this.state.messageList;
-                messageList.push({ message: message, date: date , token:token });
+                messageList.push({ message: message, date: date , id:id });
                 this.setState({ messageList: messageList });
             });
-
+    }
+    
+    getAllMessages() {
+        let token = getToken();
+        var messageList = this.state.messageList;
+        if (token === '') {
+            messageList = [];
+        }
+        
+        $.ajax({
+            headers: {'Content-Type':'application/json'},
+            url: '/api/Operations/GetAllMessages',
+            type: 'GET',
+            dataType: 'json',
+            async :false,
+            beforeSend: (xhr, settings) => {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token!);
+            },
+            success(data:any) {          
+                $.each( data, (key, item) => {
+                    messageList.push({ message: item.Message, date: item.Date , id:item.Sender });
+                });
+            },
+            error(xhr:any) {
+                console.log(xhr);
+            }
+        });
+        this.setState({ messageList: messageList });
     }
 
     handleChange(e: any) {
@@ -53,7 +92,7 @@ export class Chat extends React.Component {
     handleSendPress(e: any) {
         if (e.key === 'Enter') {
             if (this.state.message !=="") {
-                this.state.connection.invoke('sendMessage', this.state.message, getCookie());
+                this.state.connection.invoke('sendMessageAll', this.state.message, getId(),getToken());
                 this.setState({message:""});
             }
         } else {
@@ -61,7 +100,14 @@ export class Chat extends React.Component {
         }
     }
 
+    componentWillReceiveProps() {
+        this.getAllMessages();
+    }
+
     render() {
+
+       
+
         return (
             <section className="right">
                 <div className="chat-head">
@@ -77,24 +123,22 @@ export class Chat extends React.Component {
                 </div>
                 <div className="wrap-chat">
                     <div className="chat">
-                        {
-                            this.state.messageList.map((item: any, index: any) => (
-                                <Message key={index} name="" class={(item.token === getCookie()? 'me':'you')} message={item.message} date={ item.date} />
-                            ))
-                        }
+                        { this.state.messageList.map((item: any, index: any) => (
+                            <Message key={index} name="" class={(item.id === getId() ? 'me' : 'you')} message={item.message} date={ item.date}/>)) }
                     </div>
                     <div className="information"></div>
                 </div>
                 <div className="wrap-message">
                     <i className="fa fa-smile-o fa-lg" aria-hidden="true"></i>
                     <div className="message">
-                        <input type="text" className="input-message" value={this.state.message} onChange={this.handleChange} onKeyPress={this.handleSendPress} />
+                        <input type="text" className="input-message" value={this.state.message} onChange={this.handleChange} onKeyPress={this.handleSendPress}/>
                     </div>
                     <i className="fa fa-microphone fa-lg" aria-hidden="true"></i>
                 </div>
             </section>
         );
     }
+
 }
 
 
