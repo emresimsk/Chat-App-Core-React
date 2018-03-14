@@ -43,7 +43,9 @@ class Login extends React.Component<{handleTokenChange:any}> {
             dataType: 'json',
             success(data:any) {
                 if (data.code === 200) {
-                    setCookie(data.tokenResult,data.id);
+                    setCookie(data.tokenResult, data.id);
+                } else {
+                    alert(data.message);
                 }
                 console.log(data.message);
             },

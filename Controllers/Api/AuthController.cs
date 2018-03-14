@@ -112,5 +112,17 @@ namespace ChatAppCoreReact.Controllers.Api
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        [HttpGet]
+        public List<UserInfo> GetUserInfo()
+        {
+            return new List<UserInfo>()
+            {
+                new UserInfo(){Username = "chatapp1",Password = "chat1234"},
+                new UserInfo(){Username = "chatapp2",Password = "chat1234"},
+                new UserInfo(){Username = "chatapp3",Password = "chat1234"},
+                new UserInfo(){Username = "chatapp4",Password = "chat1234"}
+            };
+        }
     }
 }

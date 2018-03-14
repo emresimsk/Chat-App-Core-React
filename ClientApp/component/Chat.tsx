@@ -37,7 +37,7 @@ export class Chat extends React.Component<{isLogin:any}> {
         this.handleChange = this.handleChange.bind(this);
         this.handleSendPress = this.handleSendPress.bind(this);
         this.getAllMessages = this.getAllMessages.bind(this);
-
+        this.handleScrollToElement = this.handleScrollToElement.bind(this);
     }
 
     componentDidMount() {
@@ -104,14 +104,23 @@ export class Chat extends React.Component<{isLogin:any}> {
         this.getAllMessages();
     }
 
-    render() {
+    componentDidUpdate() {
+        this.handleScrollToElement();
+    }
 
-       
+    handleScrollToElement() {
+        $('.chat').animate({
+            scrollTop: $('.chat').get(0).scrollHeight}, 1000); 
+    
+    }
+
+
+    render() {
 
         return (
             <section className="right">
                 <div className="chat-head">
-                    profilepicture
+                    Chat
                     <div className="chat-name">
                         <h1 className="font-name"></h1>
                         <p className="font-online"></p>
@@ -122,7 +131,7 @@ export class Chat extends React.Component<{isLogin:any}> {
                     <i className="fa fa-times fa-lg" aria-hidden="true" id="close-contact-information"></i>
                 </div>
                 <div className="wrap-chat">
-                    <div className="chat">
+                    <div className="chat" >
                         { this.state.messageList.map((item: any, index: any) => (
                             <Message key={index} name="" class={(item.id === getId() ? 'me' : 'you')} message={item.message} date={ item.date}/>)) }
                     </div>
@@ -140,5 +149,3 @@ export class Chat extends React.Component<{isLogin:any}> {
     }
 
 }
-
-
